@@ -2,26 +2,39 @@ from display import *
 
 def draw_line( x0, y0, x1, y1, screen, color ):
 
+    # set x1 to be greater than x0
+    if (x1 < x0):
+        draw_line(x1, y1, x0, y0, screen, color )
+        return;
+
+    # find the slope
     if (x1 - x0) == 0:
-        slope = 1000000
+        if y1 > y0:
+            slope = 1000000
+        else:
+            slope = -1000000
     else:
         slope = (y1 - y0) * 1.0 / (x1 - x0)
 
     print( slope )
-    
-    if 0 <= slope <= 1:
-        draw_o1( x0, y0, x1, y1, screen, color )
-    elif slope > 1:
-        draw_o2( x0, y0, x1, y1, screen, color )
-    elif -1 <= slope <= 0:
-        draw_o8( x0, y0, x1, y1, screen, color )
-        
-def draw_o1( x0, y0, x1, y1, screen, color ):
+
+    # variables constant through any octant
     x = x0
     y = y0
-
     A = y1 - y0
-    B = x0 - x1 # - ( x1 - x0 )
+    B = x0 - x1
+    
+    if 0 <= slope <= 1: # 1st and 5th octants
+        draw_o1( x, y, x1, y1, A, B, screen, color )
+    elif slope > 1: # 2nd and 6th octants
+        draw_o2( x, y, x1, y1, A, B, screen, color )
+    elif -1 <= slope <= 0: # 4th and 8th octants
+        draw_o8( x, y, x1, y1, A, B, screen, color )
+    else: # 3rd and 7th octants
+        draw_o7( x, y, x1, y1, A, B, screen, color )
+        
+def draw_o1( x, y, x1, y1, A, B, screen, color ):
+
     d = 2*A + B
 
     while x <= x1:
@@ -34,12 +47,8 @@ def draw_o1( x0, y0, x1, y1, screen, color ):
         x += 1
         d += 2*A
 
-def draw_o2( x0, y0, x1, y1, screen, color ):
-    x = x0
-    y = y0
+def draw_o2( x, y, x1, y1, A, B, screen, color ):
 
-    A = y1 - y0
-    B = x0 - x1
     d = A + 2*B
 
     while y <= y1:
@@ -52,20 +61,30 @@ def draw_o2( x0, y0, x1, y1, screen, color ):
         y += 1
         d += 2*B
             
-def draw_o8( x0, y0, x1, y1, screen, color ):
-    x = x0
-    y = y0
+def draw_o8( x, y, x1, y1, A, B, screen, color ):
 
-    A = y1 - y0
-    B = x0 - x1 # - ( x1 - x0 )
     d = 2*A - B
 
     while x <= x1:
         plot(screen, color, x, y)
         
         if d < 0:
-            y -=1
+            y -= 1
             d -= 2*B
-
+            
         x += 1
         d += 2*A
+            
+def draw_o7( x, y, x1, y1, A, B, screen, color ):
+
+    d = A - 2*B
+
+    while y >= y1:
+        plot(screen, color, x, y)
+        
+        if d > 0:
+            x += 1
+            d += 2*A
+
+        y -=1
+        d -= 2*B
