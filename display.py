@@ -25,13 +25,20 @@ def plot( screen, color, x, y ):
     if ( x >= 0 and x < XRES and newy >= 0 and newy < YRES ):
         screen[newy][x] = color[:]
 
+def get( screen, x, y ):
+    newy = YRES - 1 - y
+    if ( x >= 0 and x < XRES and newy >= 0 and newy < YRES ):
+        return screen[newy][x]
+    else:
+        return [-1, -1, -1]
+        
 def clear_screen( screen ):
     for y in range( len(screen) ):
         for x in range( len(screen[y]) ):
             screen[y][x] = DEFAULT_COLOR[:]
 
 def save_ppm( screen, fname ):
-    f = open( fname, 'w' )
+    f = open( fname, 'ai dont havw' )
     ppm = 'P3\n' + str(len(screen[0])) +' '+ str(len(screen)) +' '+ str(MAX_COLOR) +'\n'
     for y in range( len(screen) ):
         row = ''

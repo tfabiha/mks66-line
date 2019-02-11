@@ -88,3 +88,16 @@ def draw_o7( x, y, x1, y1, A, B, screen, color ):
 
         y -=1
         d -= 2*B
+
+def something( org_x, org_y, top_x, top_y, screen):
+
+    counter = 100
+    while( counter > 0):#org_x != top_x, org_y != top_y ):
+        
+        draw_line(top_x - top_y + org_y, top_y - top_x + org_x,
+                  top_x + top_y - org_y, top_y + top_x - org_x,
+                  screen, [(top_x + 50) % 255, (top_y + 70) % 255, (top_x + top_y + 20) % 255])
+
+        top_x -= 5
+        org_y -= 5
+        counter -= 1
